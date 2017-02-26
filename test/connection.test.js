@@ -791,6 +791,20 @@ describe('connections:', function() {
     });
   });
 
+  describe('connect promises', function() {
+    it('should resolve with a connected connection', function (done) {
+      start.mongoose.createConnection().open(start.uri)
+        .then(function(connection) {
+          assert.notEqual(connection, undefined);
+          assert.equal(connection.readyState, 1);
+          return connection;
+        })
+        .then(function(connection) {
+          connection.close().then(done);
+        });
+    });
+  });
+
   describe('errors', function() {
     it('event fires with one listener', function(done) {
       this.timeout(1000);
